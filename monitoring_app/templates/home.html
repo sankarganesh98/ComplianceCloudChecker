@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #884dff;
+            padding: 10px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        h2 {
+            margin: 80px 10px 20px 10px; /* Adjusted margin to account for fixed top bar */
+        }
+        .button-container-main {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        .accordion {
+            width: 95%;
+            margin: 10px auto;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+        .accordion-item {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        .accordion-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-body {
+            display: none;
+            padding: 10px;
+            background-color: #fff;
+            position: relative;
+        }
+        .action-button {
+            padding: 10px 20px;
+            background-color: #884dff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            min-width: 150px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .action-button:hover {
+            background-color: #6f3bdb;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-icon {
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 40px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .dropdown, .input-field, .selectpicker {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .progress {
+            width: 80%;
+            height: 30px;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #28a745;
+            width: 0;
+            transition: width 1s ease-in-out;
+            animation: progress-animation 2s infinite;
+        }
+        @keyframes progress-animation {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        .loading-overlay p {
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="app-title">
+            <a style="font-size: x-large; font-weight: bolder;" href="{% url 'home' %}">3C App</a>
+        </div>
+        <div class="navigation">
+            <a href="{% url 'manage_compliances' %}" style="margin-right: 20px;">Manage Compliances</a>
+            <a href="{% url 'logout' %}" style="margin-right: 10px;">Logout</a>
+        </div>
+    </div>
+    <h2>ACCOUNTS</h2>
+    <div class="button-container-main">
+        <button class="action-button" onclick="window.location.href='{% url 'create_account' %}'">Create New Account</button>
+    </div>
+
+    <div class="accordion">
+        {% if cloud_accounts %}
+    {% for cloud_account in cloud_accounts %}
+    <div class="accordion-item" data-account-id="{{ cloud_account.id }}">
+        <div class="accordion-header">
+            <span class="account-name" style="flex: 1; font-weight: bold;">{{ cloud_account.account_name }}</span>
+            <span class="provider-name" style="flex: 1; text-align: left; padding-left: 20px;">{{ cloud_account.provider.name }}</span>
+            <span class="action-icon" onclick="confirmDeleteAccount({{ cloud_account.id }})">&#128465;</span>
+        </div>
+        <div class="accordion-body" style="display: none;">
+            <h4>Mapped Compliances</h4>
+            <ul id="compliance-list-{{ cloud_account.id }}">
+                {% for compliance in cloud_account.compliances %}
+                <li id="compliance-{{ compliance.id }}">
+                    {{ compliance.name }}: {{ compliance.description }}
+                    <span style="cursor: pointer; color: red;" onclick="confirmRemoveCompliance({{ compliance.id }}, {{ cloud_account.id }})">&times;</span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="button-container">
+                <button class="action-button" onclick="openComplianceModal({{ cloud_account.id }})">Add Compliance</button>
+
+                {% if cloud_account.has_scan %}
+                <a href="/check_list/{{ cloud_account.scan_id }}" style="text-decoration: none;" class="action-button">
+                    Open Results
+                </a>
+                {% else %}
+                <a href="#" class="action-button" style="background-color: #ccc; color: #666; cursor: not-allowed; pointer-events: none; text-decoration: none;">
+                    Open Results
+                </a>
+                {% endif %}
+                <form action="{% url 'run_scan' cloud_account.id %}" method="post" style="display:inline;" onsubmit="showLoadingOverlay()">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button">Rerun Scan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No cloud accounts available.</p>
+{% endif %}
+    </div>
+    
+
+  <!-- Compliance Modal -->
+<div id="complianceModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('complianceModal')">&times;</span>
+        <h2 id="complianceModalTitle">Add Compliance</h2>
+        <form id="complianceForm" method="post" action="{% url 'add_compliance' %}">
+            {% csrf_token %}
+            <label for="compliance">Select Compliance:</label>
+            <select id="complianceSelect" name="compliance" class="dropdown" required>
+                <!-- Options will be populated dynamically -->
+            </select>
+            <input type="hidden" id="cloudAccountId" name="cloud_account_id">
+            <br/><br/>
+            <button type="submit" class="action-button">Add Compliance</button>
+        </form>
+    </div>
+</div>
+
+
+    <!-- Account Modal -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('accountModal')">&times;</span>
+            <h2 id="accountModalTitle">Create New Account</h2>
+            <form id="accountForm" method="post" action="">
+                {% csrf_token %}
+                <label for="provider">Provider:</label>
+                <select id="provider" name="provider" class="dropdown">
+                    {% for provider in providers %}
+                    <option value="{{ provider.id }}">{{ provider.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="account_name">Account Name:</label>
+                <input type="text" id="account_name" name="account_name" class="input-field" required>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="input-field"></textarea>
+                <label for="access_key">Access Key:</label>
+                <input type="text" id="access_key" name="access_key" class="input-field" required>
+                <label for="secret_key">Secret Key:</label>
+                <input type="text" id="secret_key" name="secret_key" class="input-field" required>
+                <label for="compliances">Compliance Mapped to Account:</label>
+                <select id="compliances" name="compliances[]" class="selectpicker" multiple required>
+                    {% for compliance in available_compliances %}
+                    <option value="{{ compliance.id }}">{{ compliance.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" id="accountId" name="account_id">
+                <input type="hidden" name="action" value="create_account">
+                <br/><br/>
+                <button class="action-button" onclick="window.location.href='{% url 'create_account' %}'">Create New Account</button>
+                <button type="button" id="deleteAccountButton" class="action-button" onclick="confirmDeleteAccount({{ cloud_account.id }})" style="display:none;">Delete Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-success"></div>
+        </div>
+        <p>Scan in Progress...</p>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Initialize Select2 -->
+    <script>
+        $(document).ready(function() {
+            $('#compliances').select2({
+                placeholder: "Select compliances",
+                width: '100%'
+            });
+        });
+    </script>
+
+    <!-- Accordion and Modal Script -->
+    <script>
+        // JavaScript for Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function () {
+                this.classList.toggle('active');
+                const body = this.nextElementSibling;
+                if (body.style.display === 'block') {
+                    body.style.display = 'none';
+                } else {
+                    document.querySelectorAll('.accordion-body').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                    body.style.display = 'block';
+                }
+            });
+        });
+
+        // JavaScript for Modal functionality
+        function openComplianceModal(cloudAccountId) {
+            const modal = document.getElementById("complianceModal");
+            modal.style.display = "block";
+
+            // Clear the current options
+            const complianceSelect = document.getElementById("complianceSelect");
+            complianceSelect.innerHTML = '';
+
+            // Fetch available compliances for this account
+            fetch(`/get_available_compliances/${cloudAccountId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.available_compliances.forEach(compliance => {
+                        let option = document.createElement("option");
+                        option.value = compliance.id;
+                        option.textContent = compliance.name;
+                        complianceSelect.appendChild(option);
+                    });
+                });
+
+            document.getElementById("cloudAccountId").value = cloudAccountId;
+        }
+
+        function confirmRemoveCompliance(complianceId, cloudAccountId) {
+            if (confirm("Are you sure you want to remove this compliance?")) {
+                const url = `/remove_compliance/${cloudAccountId}/${complianceId}/`;
+                window.location.href = url;
+            }
+        }
+
+        function confirmDeleteAccount(accountId) {
+            if (confirm("Are you sure you want to delete this account?")) {
+                const url = `/delete_account/${accountId}/`;
+                window.location.href = url;
+            }
+        }
+
+        function showLoadingOverlay() {
+            document.getElementById("loadingOverlay").style.display = "flex";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.className === "modal") {
+                event.target.style.display = "none";
+            }
+        }
+
+        function openAccountModal(cloudAccountId = null) {
+            const modal = document.getElementById("accountModal");
+            const form = document.getElementById("accountForm");
+            const modalTitle = document.getElementById("accountModalTitle");
+            const modalButton = document.getElementById("accountModalButton");
+            const deleteButton = document.getElementById("deleteAccountButton");
+
+            if (cloudAccountId) {
+                modalTitle.innerText = "Edit Account";
+                modalButton.innerText = "Save Changes";
+                deleteButton.style.display = "inline-block";
+                form.action = "/edit_account/" + cloudAccountId;
+            } else {
+                modalTitle.innerText = "Create New Account";
+                modalButton.innerText = "Create Account";
+                deleteButton.style.display = "none";
+                form.action = "";
+                form.reset();
+            }
+
+            modal.style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    </script>
+</body>
+</html>

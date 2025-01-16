@@ -1,0 +1,15 @@
+{
+  "service_account": {
+    "type": "service_account",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "client_id": "107836560837551506496",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "project_id": "coastal-idea-432410-t9",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCeNF2Ocs/opjpZ\nf0n3iI2R0NPPVWJwqICZwPtjZtnmLQqYIg+FRU9pZeKmzDW2vkSdrnUbUQHlc+BV\nN/qcNpkbTgB11nJQCdHRnwYxvhorpcF+jkIOImpsfJWVC913uQqadxG/JYjXnbUd\nXiITVZA5CeLyf+myplboyFNBm/xkmHekAqKEg1dtGBJlGlqCK6IabfkNZ6r5QuWu\nkcenDC9OEerH5/Ngnn8Wbz5Xhz2tsXAcT4H0+9yGFoepCLQz62WfFX/PSjjFzhzJ\n/y62SmJ8hSPuNakyVVQV8JQbG/xFnwuLk/uo5J/BLoY2eZXUnsTbeARyZ5zaSeWJ\nLi1oqeZZAgMBAAECggEAD5EuCowMHsOqlq9ihx+x9ID0sqBffx/phZeadPnEI7TX\nZ8hkOBQtn/ylTI3oFCsNQ+nMfqteMSaRkrkfKRtrPedTPsUi+vK4aXTJLoBbAWP+\nUfZsFAl5aOLqch/Yg0UbQL9KKQGnwTW0wmbGmhnvhtlM8lk5VPmusBm0LY7Mi1ZY\nsgFAuG+s5bWsQwaVCGI0dqA/8BcEEmTEoKgCEPl/jlrW9XmkjB0sIluCRVtKm261\nZ/rSnEJqUp9sTlD3HPmNFd/6/x8PkJO5ftnf8un8/h9FEvtb0crWoD0kEewenRsi\n5HlmR7JGU+JDUzDQu1kVlF6d5IS7GEF4zex1aB5aDQKBgQDWcPpo6JG4SQNsCfHC\nHgW4L98BhYDUy9TELi4v0B2l/PF+YVN+gg2oovSMDugmV1U2H0ba96yYoZ1uaq+W\nYuA4z8VOu7FyLP03IwBZlLReX1CmWpQb7qzJY/oXyFZ8NjKOYM6yHl+F8m9KktcV\ng6J3Mm8jmiTJ+AW8uZoqvTK7dQKBgQC83VO4kIZlIyoyZDdAVVTaMVnHjYA7UhZe\nV1OObpL4/fvwVUmdnmVRuxkYQJmdRKmVby9kwrwaVmU7l6MbD1o6/qZo/JHkCYQW\n2Dc4lQTszBoxaCUeGt9qw+pYg3kSKxVF+Rt18GbUlqkc9Gx8XCXcFlWS1/BEoMM1\nkV8ZqVx21QKBgENfL20yVEXfupGA9lGUeRuK/rdNqFIyz9/q2lvvOMFjnMOl9EN0\nvLHUsJwoOsuA+KaOYQZ+dd1mOT3tisjmu6ddr5Gy6mcCt3NRLdT3IUvdCkuZfZrg\n+6wyGurJ6FIR/QQ6afYQENbWehyl0alSuAJW+A/pZ9GEeNj4PvVah8vZAoGBAJGm\nKgOCyXJDrS4RZR6i7/4Y4wDm2gZlZsS4mcKU+Zk13c5ZJ517Yu2l2VN/tje3lQSe\nKzGMkB3LlORhK7MZot8uNU1vwl7XC9vGQMfM/HBVcrm5dC6EUNn4XsiGE590REKj\nOo84p0S5L5AZ23QIaFYTj0jgaPWz+PddtbaHirxFAoGABV2bCVjJMI2fkvv/1lr5\nUNL+G54WI7JmAoR8t3R9Ffr2TzBxsssoJxVQKoHTLLiapWaGlhjpQxYnvFQJ07TG\naZybjENkkTRNu4TMMw4nEVd8rrSm37+rdu50NuuC3+OuB6teG68HPuvE7Igv5elX\nQZCzL6c8MwRwJgJPlsRa0eY=\n-----END PRIVATE KEY-----\n",
+    "client_email": "prowler@coastal-idea-432410-t9.iam.gserviceaccount.com",
+    "private_key_id": "891c8f2c41f10e7ddf0b97071fb71c1dad45ed5d",
+    "universe_domain": "googleapis.com",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/prowler%40coastal-idea-432410-t9.iam.gserviceaccount.com",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
+  }
+}

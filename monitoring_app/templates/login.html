@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3C Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #262626 37.5%, #884dff 37.5%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        height: 80vh;
+        width: 80vw;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .left-side {
+        flex: 0.5;
+        background-color: #262626;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .right-side {
+        flex: 1;
+        background-color: #884dff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        position: relative;
+      }
+
+      .login-container {
+        background-color: #262626;
+        color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 100%;
+      }
+
+      .login-container form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-container label {
+        margin-bottom: 5px;
+      }
+
+      .login-container input[type="text"],
+      .login-container input[type="password"],
+      .login-container button {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .login-container button {
+        background-color: #884dff;
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 10px;
+        width: auto;
+        transition: background-color 0.3s ease;
+      }
+
+      .login-container button:hover {
+        background-color: #00cc44;
+      }
+
+      .login-container a {
+        color: rgba(204, 204, 204, 0.7);
+        font-size: 14px;
+      }
+
+      .right-side h2 {
+        font-size: 72px;
+        margin-bottom: 10px;
+        text-align: left;
+        padding-left: 60px;
+      }
+
+      .right-side p {
+        font-size: 20px;
+        line-height: 1.5;
+        text-align: justify;
+        margin: 0 auto;
+        max-width: 80%;
+      }
+
+      .bubble-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"%3E%3Ccircle cx="10" cy="10" r="8" fill-opacity="0.2" fill="%23884dff" /%3E%3C/svg%3E');
+        pointer-events: none;
+      }
+
+      .alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        color: #fff;
+        width: 300px;
+        box-sizing: border-box;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        opacity: 0.9;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .alert-danger {
+        background-color: #ff4c4c;
+      }
+
+      .alert-success {
+        background-color: #00cc44;
+      }
+
+      .alert .close-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #fff;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-side">
+        <div class="login-container">
+          <h1>Login Page</h1>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.username.label_tag }} {{ form.username }}  <!-- Displaying form fields without error messages -->
+            {{ form.password.label_tag }} {{ form.password }}
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      </div>
+      <div class="right-side">
+        <div class="bubble-pattern"></div>
+        <h2>Welcome to Cloud Compliance Checker (3C)</h2>
+        <p>
+            3C is a powerful tool designed to scan your cloud platform, ensuring that your security configurations meet industry standards and best practices. With 3C, you can quickly identify potential vulnerabilities by receiving detailed reports that highlight areas of compliance (Pass) and non-compliance (Fail). This enables you to take immediate corrective actions to secure your cloud environment, maintaining the integrity and safety of your critical data and services.
+        </p>
+      </div>
+    </div>
+
+    <!-- Example of conditional rendering for the alert -->
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+      <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+      <span>
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+      </span>
+    </div>
+    {% elif form.success %}
+    <div class="alert alert-success" role="alert">
+      <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+      <span>Login successful! Redirecting...</span>
+    </div>
+    {% endif %}
+    
+  </body>
+</html>
